@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const DashFooter = () => {
+const DashFooter = (): JSX.Element => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const onGoHomeClicked = (e) => navigate("/dash")
+  const onGoHomeClicked = () => navigate("/dash")
 
-  let goHomeButton = null
+  let goHomeButton: JSX.Element | null = null
+
   if (pathname !== "/dash") {
     goHomeButton = (
       <button
