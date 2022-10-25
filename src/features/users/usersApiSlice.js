@@ -10,12 +10,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getUsers: builder.query({
       query: () => ({
-        url: '/user',
+        url: '/users',
         validateStatus: (response, result) => {
           return response.status === 200 && !result.isError
         }
       }),
-      keepUnusedDataFor: 5,
       transformResponse: responseData => {
         const loadedUsers = responseData.map(user => {
           user.id = user._id
@@ -48,8 +47,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     updateUser: builder.mutation({
       query: (user) => ({
-        url: `/users/${user.id}`,
-        method: 'PATH',
+        url: `/users`,
+        method: 'PATCH',
         body: {
           ...user
         }
