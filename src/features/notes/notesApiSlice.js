@@ -1,5 +1,4 @@
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
-// import { EntityId } from '@reduxjs/toolkit/dist/entities/models'
 import { apiSlice } from '../../app/api/apiSlice'
 // import { NoteType } from './Note.types'
 
@@ -12,10 +11,12 @@ const initialState = notesAdapter.getInitialState()
 export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getNotes: builder.query({
-      query: () => '/notes',
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError
-      },
+      query: () => ({
+        url: '/notes',
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError
+        }
+      }),
       transformResponse: responseData => {
         const loadedNotes = responseData.map(note => {
           note.id = note._id
@@ -41,7 +42,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           ...note
         }
       }),
-      invalidatesTags: (result, err, arg) => [
+      invalidatesTags: (result, arror, arg) => [
         { type: 'Note', id: 'LIST' }
       ]
     }),
@@ -53,17 +54,17 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           ...note
         }
       }),
-      invalidatesTags: (result, err, arg) => [
+      invalidatesTags: (result, error, arg) => [
         { type: 'Note', id: arg.id }
       ]
     }),
     deleteNote: builder.mutation({
       query: ({ id }) => ({
-        url: `/notes/${id}`,
+        url: `/notes`,
         method: 'DELETE',
         body: { id }
       }),
-      invalidatesTags: (result, err, arg) => [
+      invalidatesTags: (result, error, arg) => [
         { type: ' Note', id: arg.id }
       ]
     })
