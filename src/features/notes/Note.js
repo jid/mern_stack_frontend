@@ -1,14 +1,25 @@
-import React from 'react'
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-import { useSelector } from 'react-redux'
-import { selectNoteById } from "./notesApiSlice";
+// import { useSelector } from 'react-redux'
+// import { selectNoteById } from "./notesApiSlice";
+import { useGetNotesQuery } from './notesApiSlice';
+
+import useTitle from "../../hooks/useTitle";
+
+import { memo } from 'react'
 
 const Note = ({ id }) => {
-  const note = useSelector(state => selectNoteById(state, id))
+  useTitle('Service Repairs - note details')
+  // const note = useSelector(state => selectNoteById(state, id))
+
+  const { note } = useGetNotesQuery("notesList", {
+    selectFromResult: ({ data }) => ({
+      note: data?.entities[id]
+    })
+  })
+
   const navigate = useNavigate()
 
   if (!note)
@@ -43,4 +54,6 @@ const Note = ({ id }) => {
   )
 }
 
-export default Note
+const memoizedNote = memo(Note)
+
+export default memoizedNote

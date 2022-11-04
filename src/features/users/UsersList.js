@@ -1,7 +1,7 @@
 import React from 'react'
 import User from './User'
 import { useGetUsersQuery } from './usersApiSlice'
-// import { EntityId } from '@reduxjs/toolkit/dist/entities/models'
+import PulseLoader from 'react-spinners/PulseLoader'
 
 const UsersList = () => {
   const {
@@ -19,7 +19,7 @@ const UsersList = () => {
   let content
 
   if (isLoading)
-    content = <p>Loading...</p>
+    content = <PulseLoader color={"#FFF"} />
 
   if (isError) {
     content = <p className="errmsg">{error?.data?.message}</p>

@@ -1,16 +1,24 @@
-import React from 'react'
+import { memo } from 'react'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-import { useSelector } from 'react-redux'
-import { selectUserById } from "./usersApiSlice";
+// import { useSelector } from 'react-redux'
+// import { selectUserById } from "./usersApiSlice";
+import { useGetUsersQuery } from './usersApiSlice';
+
 
 // import { UserType } from './User.types'
 
 const User = ({ id }) => {
-  const user = useSelector(state => selectUserById(state, id))
+  // const user = useSelector(state => selectUserById(state, id))
+
+  const { user } = useGetUsersQuery("usersList", {
+    selectFromResult: ({ data }) => ({
+      user: data?.entities[id]
+    })
+  })
   const navigate = useNavigate()
 
   if (!user)
@@ -36,4 +44,6 @@ const User = ({ id }) => {
   )
 }
 
-export default User
+const memoizedUser = memo(User)
+
+export default memoizedUser
